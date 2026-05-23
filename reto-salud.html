@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Reto Salud"/>
+<meta name="theme-color" content="#0c1c0c" id="themeMetaColor"/>
+<title>🌱 Tu Reto de Salud</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overscroll-behavior:none}
+body{font-family:'Source Sans 3',sans-serif;transition:background .3s,color .3s}
+
+/* ── DARK THEME (default) ── */
+body.dark{background:#0c1c0c;color:#deeede}
+body.dark .card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)}
+body.dark .tab{color:#5a8a5a}
+body.dark .tab.on{background:rgba(255,255,255,0.10);color:#deeede}
+body.dark .pb-o{background:rgba(255,255,255,0.08)}
+body.dark .mb{background:#152015;border-color:rgba(92,186,138,0.22)}
+body.dark .din{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.18);color:#deeede}
+body.dark .ghost-btn{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.10);color:#8aaa8a}
+body.dark .relapse-btn{background:rgba(220,80,60,0.12);border-color:rgba(220,80,60,0.28);color:#e08070}
+body.dark .app-bg{background:linear-gradient(160deg,#0c1c0c,#152015,#0c160c)}
+body.dark .hdr-bg{background:linear-gradient(180deg,rgba(92,186,138,0.11) 0%,transparent 100%);border-bottom:1px solid rgba(255,255,255,0.05)}
+body.dark .title-color{color:#b0d8c0}
+body.dark .sub-color{color:#4a7a4a}
+body.dark .quote-box{background:rgba(240,200,70,0.06);border:1px solid rgba(240,200,70,0.13)}
+body.dark .quote-label{color:#907040}
+body.dark .quote-text{color:#d0c070}
+body.dark .mile-reached{color:#b8d8c0}
+body.dark .mile-unreach{color:#3a5a3a}
+body.dark .mile-body{color:#90b090;border-top:1px solid rgba(255,255,255,0.06)}
+body.dark .section-label{color:#4a7a4a}
+body.dark .dim{color:rgba(255,255,255,0.25)}
+body.dark .dimmer{color:rgba(255,255,255,0.2)}
+body.dark .dimmest{color:rgba(255,255,255,0.15)}
+body.dark .tip-box{background:rgba(240,200,70,0.05);border:1px solid rgba(240,200,70,0.13)}
+body.dark .tip-label{color:#907040}
+body.dark .ex-tip-box{background:rgba(96,196,224,0.06);border:1px solid rgba(96,196,224,0.14)}
+body.dark .ex-tip-title{color:#60c4e0}
+body.dark .ex-tip-body{color:#4a8090}
+body.dark .ex-tip-strong{color:#80c4d8}
+body.dark .weight-box{background:rgba(240,200,70,0.05);border:1px solid rgba(240,200,70,0.12)}
+body.dark .weight-conn-title{color:#d0c060}
+body.dark .weight-conn-body{color:rgba(255,255,255,0.35)}
+body.dark .del-btn{color:rgba(255,255,255,0.15)}
+body.dark .sci-label{color:#4a7a4a}
+body.dark .src-label{color:#2a4a2a}
+
+/* ── LIGHT THEME ── */
+body.light{background:#f0f7f0;color:#1a2e1a}
+body.light .card{background:#ffffff;border:1px solid #c8ddc8;box-shadow:0 2px 8px rgba(0,80,0,0.06)}
+body.light .tab{color:#4a7a4a}
+body.light .tab.on{background:#2a5a2a;color:#ffffff}
+body.light .pb-o{background:#d0e4d0}
+body.light .mb{background:#ffffff;border-color:#a0c8a0;box-shadow:0 8px 32px rgba(0,60,0,0.12)}
+body.light .din{background:#f0f7f0;border-color:#a0c0a0;color:#1a2e1a}
+body.light .ghost-btn{background:#e8f4e8;border-color:#b0d0b0;color:#3a6a3a}
+body.light .relapse-btn{background:rgba(220,80,60,0.08);border-color:rgba(220,80,60,0.3);color:#c04030}
+body.light .app-bg{background:linear-gradient(160deg,#e8f4e8,#f5fcf5,#e8f4e8)}
+body.light .hdr-bg{background:linear-gradient(180deg,rgba(60,140,60,0.08) 0%,transparent 100%);border-bottom:1px solid #c8ddc8}
+body.light .title-color{color:#1a4a1a}
+body.light .sub-color{color:#3a6a3a}
+body.light .quote-box{background:#fffbe6;border:1px solid #e0c840}
+body.light .quote-label{color:#a07820}
+body.light .quote-text{color:#6a5010}
+body.light .mile-reached{color:#1a3a1a}
+body.light .mile-unreach{color:#8aaa8a}
+body.light .mile-body{color:#3a5a3a;border-top:1px solid #d0e4d0}
+body.light .section-label{color:#3a6a3a}
+body.light .dim{color:rgba(20,50,20,0.5)}
+body.light .dimmer{color:rgba(20,50,20,0.4)}
+body.light .dimmest{color:rgba(20,50,20,0.3)}
+body.light .tip-box{background:#fffbe6;border:1px solid #d8c030}
+body.light .tip-label{color:#806010}
+body.light .ex-tip-box{background:#e8f8ff;border:1px solid #80c4e0}
+body.light .ex-tip-title{color:#1a6080}
+body.light .ex-tip-body{color:#2a6070}
+body.light .ex-tip-strong{color:#1a5070}
+body.light .weight-box{background:#fffbe6;border:1px solid #d0b820}
+body.light .weight-conn-title{color:#806010}
+body.light .weight-conn-body{color:rgba(20,50,20,0.5)}
+body.light .del-btn{color:rgba(20,50,20,0.25)}
+body.light .sci-label{color:#3a6a3a}
+body.light .src-label{color:#6a9a6a}
+
+/* ── SHARED ── */
+.hd{font-family:'Playfair Display',serif}
+.card{border-radius:16px}
+.tab{cursor:pointer;border:none;background:transparent;padding:9px 12px;border-radius:10px;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:600;transition:all .2s;white-space:nowrap}
+.pb-o{border-radius:99px;height:6px;overflow:hidden}
+.pb-i{height:100%;border-radius:99px;transition:width 1.2s ease}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.72);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;overflow-y:auto}
+.mb{border-radius:20px;padding:22px;max-width:400px;width:100%}
+.din{border-radius:9px;padding:9px 12px;font-size:15px;font-family:'Source Sans 3',sans-serif;width:100%}
+.relapse-btn{border-radius:9px;padding:7px 13px;cursor:pointer;font-size:11px;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.mile-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:11px;margin-bottom:7px;cursor:pointer}
+.ghost-btn{border-radius:9px;padding:7px 13px;cursor:pointer;font-size:11px;font-family:'Source Sans 3',sans-serif}
+.green-btn{background:#5cba8a;border:none;color:#0a180a;border-radius:10px;padding:11px;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:700;font-size:14px;width:100%}
+.theme-toggle{position:absolute;top:18px;right:16px;border:1px solid rgba(128,180,128,0.3);border-radius:20px;padding:5px 11px;cursor:pointer;font-size:14px;z-index:10;font-family:'Source Sans 3',sans-serif;font-weight:600;transition:all .2s}
+body.dark .theme-toggle{background:rgba(255,255,255,0.08);color:#deeede}
+body.light .theme-toggle{background:rgba(0,80,0,0.08);color:#1a4a1a}
+</style>
+<script>
+(function(){
+  var saved=localStorage.getItem("theme");
+  var sysDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var theme=saved||(sysDark?"dark":"light");
+  document.body.className=theme;
+  var meta=document.getElementById("themeMetaColor");
+  if(meta)meta.content=theme==="light"?"#f0f7f0":"#0c1c0c";
+})();
+</script>
+</head>
+<body><div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect} = React;
+
+// ── STATIC DATA ─────────────────────────────────────────────────────────────
+
+const QUOTES = ["Cada día sin fumar es una victoria que nadie te puede quitar.","Tu cuerpo lleva días sanándose. No lo pares ahora.","La disciplina es elegir entre lo que quieres ahora y lo que quieres más.","No se trata de ser perfecto. Se trata de no rendirse.","El hábito que construyes hoy es la salud que tienes mañana.","Pequeños pasos cada día. Grandes cambios cada mes.","Tu yo del futuro te está dando las gracias ahora mismo.","La recaída no es el final. Rendirse sería el final.","Cada vez que dices no, tu cerebro aprende a decir no.","Eres más fuerte que cualquier antojo. Ya lo has demostrado.","El esfuerzo de hoy es el orgullo de mañana.","No compitas con nadie. Solo con quien eras ayer.","Tu cuerpo es el único lugar donde tienes que vivir. Cuídalo.","Un día a la vez. Eso es todo lo que se necesita.","Cada mañana es una nueva oportunidad de hacer algo bueno por ti.","Lo que resistes, persiste. Lo que enfrentas, se transforma.","El mayor acto de amor propio es cuidar tu cuerpo.","No necesitas motivación todos los días. Solo necesitas disciplina.","Estás construyendo la mejor versión de ti. Ladrillo a ladrillo.","El dolor del esfuerzo es temporal. El orgullo de lograrlo es permanente.","Cada cigarro que no fumas, cada dulce que rechazas, es una elección por ti.","La fuerza no viene de lo que puedes hacer. Viene de superar lo que creías que no podías.","Hoy puede ser difícil. Mañana será más fácil. Pasado habrás cambiado.","Tu mente dice que no puedes. Tu historial dice que sí puedes.","No estás a dieta. Estás aprendiendo a cuidarte.","El antojo dura 3 minutos. Tu salud dura toda la vida.","Cada día que pasa sin fumar, tu pulmón respira un poco más libre.","La motivación te arranca. El hábito te mantiene.","Un paso atrás no cancela diez pasos adelante.","Mereces sentirte bien. Y lo estás logrando.","El músculo que ganas pesa más que la grasa que pierdes — y eso es un éxito."];
+
+const DAILY_TIPS = {
+  smoking:[{icon:"💧",tip:"Agua fría al primer antojo",why:"Beber agua fría activa el nervio vago y reduce el impulso en segundos."},{icon:"🌬️",tip:"Respira: 4 dentro, 7 aguanta, 8 fuera",why:"Esta técnica reduce el cortisol y calma el sistema nervioso en 90 segundos."},{icon:"🚶",tip:"Camina 5 min cuando notes el antojo",why:"El ejercicio libera dopamina, el mismo neuroquímico que buscaba el cigarro."},{icon:"🥜",tip:"Ten siempre algo en la mano o la boca",why:"El hábito del cigarro es también físico. Pipas, palitos, chicle sin azúcar."},{icon:"⏱️",tip:"Pon un temporizador de 3 minutos",why:"El pico del antojo dura 2-3 min. Solo tienes que esperar que pase."},{icon:"📞",tip:"Llama a alguien cuando el antojo sea fuerte",why:"El apoyo social activa oxitocina y reduce el estrés que dispara el antojo."},{icon:"🧊",tip:"Sujeta algo frío en la mano",why:"La sensación física intensa distrae al cerebro del antojo de forma inmediata."}],
+  diet:[{icon:"🥚",tip:"Empieza el día con proteína",why:"Huevos o yogur griego reducen el hambre hasta un 30% el resto del día."},{icon:"💧",tip:"Un vaso de agua antes de cada comida",why:"Reduce el apetito y mejora la digestión. El 40% del hambre es en realidad sed."},{icon:"🍽️",tip:"Mitad verdura, cuarto proteína, cuarto carbs",why:"Esta proporción estabiliza la glucosa y evita los picos que generan antojos."},{icon:"🍓",tip:"Fruta entera cuando quieras dulce",why:"La fibra ralentiza el azúcar. Una naranja tarda 20 min en absorberse. Un zumo, 2 min."},{icon:"🏷️",tip:"Lee las etiquetas",why:"Si tiene más de 5 ingredientes difíciles de pronunciar, es ultraprocesado."},{icon:"😴",tip:"Duerme 7-8 horas esta noche",why:"Dormir poco aumenta grelina (hambre) y reduce leptina (saciedad). La dieta empieza en la cama."},{icon:"🥣",tip:"No te saltes comidas",why:"El hambre acumulada genera decisiones impulsivas. Come cada 3-4 horas."}],
+  exercise:[{icon:"🌅",tip:"10 minutos por la mañana valen más que 60 por la tarde",why:"El ejercicio matutino activa el metabolismo todo el día."},{icon:"🎵",tip:"Música que te guste mientras te mueves",why:"La música aumenta la resistencia al esfuerzo hasta un 15%."},{icon:"📱",tip:"Deja las zapatillas junto a la cama",why:"Reducir la fricción de empezar es el truco más efectivo para crear el hábito."},{icon:"🧗",tip:"Escaleras en vez de ascensor hoy",why:"Pequeñas decisiones activas suman. 10 pisos al día = 15 min de cardio semanal."},{icon:"🤸",tip:"5 minutos de estiramientos antes de dormir",why:"Mejora el sueño y reduce el dolor muscular. Es ejercicio aunque no lo parezca."},{icon:"🏊",tip:"Cualquier movimiento cuenta",why:"Bailar, limpiar, pasear rápido: todo suma. El objetivo es moverse, no sudar."},{icon:"👟",tip:"Comprométete solo con 10 minutos",why:"El 90% de las veces seguirás más. El inicio es el único obstáculo."}],
+};
+
+const SMOKING_MS=[{day:1,icon:"🩸",short:"Monóxido de carbono fuera",body:"El CO en sangre vuelve a nivel normal en 24h. Tu sangre ya transporta más oxígeno a cada célula."},{day:2,icon:"👃",short:"Sabor y olfato despiertan",body:"Las terminaciones nerviosas empiezan a regenerarse. La comida empieza a saber diferente."},{day:3,icon:"🌬️",short:"Bronquios más abiertos",body:"Los bronquiolos se relajan. La nicotina ya está fuera del cuerpo — por eso el pico de ansiedad es ahora."},{day:7,icon:"⭐",short:"Pico de abstinencia superado",body:"Entre días 3-7 es el momento más difícil. Si llegaste aquí, superaste el mayor riesgo de recaída."},{day:14,icon:"🦵",short:"Circulación notablemente mejor",body:"Manos y pies más cálidos. El riesgo de infarto ya está bajando de forma medible."},{day:30,icon:"🫁",short:"Cilios bronquiales renacen",body:"Los cilios en tus pulmones se regeneran y limpian mucosidad. Puede que tosas más — es buena señal."},{day:90,icon:"💪",short:"+30% función pulmonar",body:"La función pulmonar puede mejorar hasta un 30%. El deporte se vuelve mucho más fácil."},{day:180,icon:"🎯",short:"Tos crónica casi desaparece",body:"La producción excesiva de mucosidad se normaliza. La tos del fumador prácticamente desaparece."},{day:365,icon:"❤️",short:"Riesgo cardíaco a la mitad",body:"El riesgo de enfermedad coronaria se reduce a la MITAD vs un fumador. Un año de victoria."}];
+const DIET_MS=[{day:1,icon:"🧂",short:"Menos retención de líquidos",body:"Los ultraprocesados tienen 3-5x más sodio. Al primer día la presión arterial baja y el cuerpo libera líquido."},{day:3,icon:"🩸",short:"Glucosa más estable",body:"Sin azúcar añadida, los picos de insulina disminuyen. La energía fluye de forma más constante."},{day:7,icon:"🧠",short:"Niebla mental se aclara",body:"El brain fog causado por los picos de glucosa se reduce. El cerebro funciona con energía más estable."},{day:14,icon:"✨",short:"Piel más luminosa",body:"Menos azúcar = menos glicación = colágeno más sano. Cambios visibles en 2 semanas."},{day:21,icon:"⚡",short:"Energía constante todo el día",body:"Sin montañas rusas de glucosa, la energía se mantiene estable. El bajón de las 3pm desaparece."},{day:30,icon:"🔥",short:"Metabolismo optimizado",body:"La sensibilidad a la insulina mejora. El cuerpo quema grasa con más eficiencia."},{day:90,icon:"💪",short:"Riesgo de diabetes tipo 2 baja",body:"Reducción del 30-50% en marcadores de resistencia a insulina. Tu metabolismo es otro."}];
+const EXERCISE_MS=[{day:1,icon:"⚡",short:"Dopamina y endorfinas liberadas",body:"Desde la primera sesión, el cerebro libera el mismo cóctel que buscan el cigarro y el azúcar — pero sin daño."},{day:5,icon:"😴",short:"Sueño más profundo",body:"El ejercicio mejora la calidad del sueño. Más sueño profundo = menos antojos al día siguiente."},{day:10,icon:"🫀",short:"Corazón más eficiente",body:"Con 10 sesiones, el corazón empieza a bombear con más eficiencia. La presión en reposo baja."},{day:20,icon:"🔥",short:"Metabolismo acelerado",body:"El músculo quema calorías incluso en reposo. Tu tasa metabólica basal ha subido."},{day:30,icon:"🧠",short:"Nuevas neuronas en el hipocampo",body:"El ejercicio aeróbico promueve la neurogénesis. Memoria y concentración mejoran de forma medible."},{day:50,icon:"💪",short:"Cambios físicos visibles",body:"50 sesiones es el umbral donde los cambios físicos son claramente visibles y el hábito está consolidado."},{day:90,icon:"🏃",short:"+20% capacidad cardiovascular",body:"El VO2 max puede mejorar hasta un 20%. Tu cuerpo es fisiológicamente más joven."}];
+
+const COUNTERS=[
+  {key:"smoking",label:"Sin fumar",icon:"🚭",color:"#f0c84a",sk:"smokingStart",relapseSk:"smokingRelapses",ms:SMOKING_MS,unit:"días"},
+  {key:"diet",label:"Dieta limpia",icon:"🥗",color:"#e07060",sk:"dietStart",relapseSk:"dietRelapses",ms:DIET_MS,unit:"días"},
+  {key:"exercise",label:"Ejercicio",icon:"🏋️",color:"#60c4e0",sk:"exSessions",relapseSk:null,ms:EXERCISE_MS,unit:"sesiones"},
+];
+
+const RELAPSE_MSG={
+  smoking:["Una recaída no borra el progreso. El 95% de ex-fumadores recayeron antes de dejarlo definitivamente. Eres parte de la mayoría.","El cigarro ganó hoy. Tú ganarás mañana. Cada intento te enseña algo nuevo sobre tus desencadenantes.","Fumar un cigarro no te hace fumadora. Rendirte sí."],
+  diet:["Un desliz no es un fracaso. Una comida mala no arruina una semana de buenas decisiones. Vuelve al siguiente plato.","La dieta perfecta no existe. Lo que existe es volver a elegir bien en la próxima comida.","Tu cuerpo no lleva la cuenta de un día. Lleva la cuenta de semanas."],
+};
+
+// ── UTILS ───────────────────────────────────────────────────────────────────
+const todayKey=()=>new Date().toISOString().split("T")[0];
+const dayOfYear=()=>{const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/86400000);};
+const getDaysSince=d=>{if(!d)return 0;return Math.max(0,Math.floor((new Date()-new Date(d))/86400000));};
+const getLS=(k,fb)=>{try{const v=localStorage.getItem(k);return v!==null?v:fb;}catch{return fb;}};
+const setLS=(k,v)=>{try{localStorage.setItem(k,v);}catch{}};
+const fmtDate=d=>d?new Date(d+"T12:00:00").toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}):"—";
+const fmtShort=d=>d?new Date(d+"T12:00:00").toLocaleDateString("es-ES",{day:"numeric",month:"short"}):"";
+const parseJSON=(k,fb)=>{try{return JSON.parse(getLS(k,null))||fb;}catch{return fb;}};
+
+// ── WEIGHT CHART ─────────────────────────────────────────────────────────────
+function WeightChart({entries, goalWeight}) {
+  if (!entries || entries.length === 0) return (
+    <div style={{textAlign:"center",padding:"20px 0",color:"rgba(255,255,255,0.2)",fontSize:13}}>Sin registros aún. Añade tu primer peso.</div>
+  );
+  const last = entries.slice(-7);
+  const vals = last.map(e=>e.kg);
+  const min = Math.max(0, Math.min(...vals) - 2);
+  const max = Math.max(...vals) + 2;
+  const range = max - min || 1;
+  const goalLine = goalWeight ? Math.max(0, Math.min(100, ((goalWeight - min) / range) * 100)) : null;
+
+  return (
+    <div style={{position:"relative"}}>
+      {goalLine !== null && (
+        <div style={{position:"absolute",top:`${100-goalLine}%`,left:0,right:0,borderTop:"1px dashed rgba(92,186,138,0.5)",zIndex:1}}>
+          <span style={{fontSize:9,color:"#5cba8a",background:"#152015",padding:"0 4px",position:"absolute",right:0,top:-8}}>meta</span>
+        </div>
+      )}
+      <div className="bar-chart">
+        {last.map((e,i)=>{
+          const h = ((e.kg - min) / range) * 100;
+          const isLow = goalWeight && e.kg <= goalWeight;
+          return (
+            <div key={i} className="bar-col">
+              <div className="bar-val">{e.kg}</div>
+              <div className="bar-seg" style={{height:`${Math.max(h,8)}%`,background:isLow?"#5cba8a":"rgba(240,200,70,0.6)"}}/>
+              <div className="bar-lbl">{fmtShort(e.date).split(" ")[0]}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── MILESTONE LIST ───────────────────────────────────────────────────────────
+function MilestoneList({ms, days, isEx}) {
+  const [sel,setSel]=useState(null);
+  return <div>{ms.map(m=>{
+    const reached=m.day<=days;
+    const isCur=ms.filter(x=>x.day<=days).slice(-1)[0]?.day===m.day;
+    return(
+      <div key={m.day} className="mile-row" onClick={()=>setSel(sel===m.day?null:m.day)}
+        style={{borderLeft:`3px solid ${reached?(isCur?"#f0d050":"#5cba8a"):"rgba(255,255,255,0.07)"}`,background:isCur?"rgba(240,208,50,0.05)":reached?"rgba(92,186,138,0.03)":"transparent",opacity:reached?1:.35}}>
+        <div style={{fontSize:22,flexShrink:0}}>{m.icon}</div>
+        <div style={{flex:1}}>
+          <div style={{display:"flex",alignItems:"center",gap:7,flexWrap:"wrap"}}>
+            <span style={{fontSize:13,fontWeight:700,color:reached?(document.body.className==="light"?"#1a3a1a":"#b8d8c0"):(document.body.className==="light"?"#8aaa8a":"#3a5a3a")}}>
+              {isEx?`Sesión ${m.day}`:m.day<7?`Día ${m.day}`:m.day<30?`Semana ${Math.round(m.day/7)}`:m.day<365?`Mes ${Math.round(m.day/30)}`:"1 Año"}
+            </span>
+            {isCur&&<span style={{fontSize:9,background:"#f0d050",color:"#201400",borderRadius:5,padding:"2px 7px",fontWeight:700}}>ESTÁS AQUÍ</span>}
+            {reached&&!isCur&&<span style={{fontSize:9,background:"#5cba8a",color:"#081408",borderRadius:5,padding:"2px 7px",fontWeight:700}}>✓</span>}
+          </div>
+          <div style={{fontSize:12,color:reached?(document.body.className==="light"?"#3a5a3a":"#6a8a6a"):(document.body.className==="light"?"#aabcaa":"#2a4a2a"),marginTop:2}}>{m.short}</div>
+          {sel===m.day&&<div style={{fontSize:12,lineHeight:1.6,marginTop:8,paddingTop:8,borderTop:document.body.className==="light"?"1px solid #d0e4d0":"1px solid rgba(255,255,255,0.06)",color:document.body.className==="light"?"#3a5a3a":"#90b090"}}>{m.body}</div>}
+        </div>
+        <div style={{fontSize:12,color:"#2a4a2a"}}>{sel===m.day?"▲":"›"}</div>
+      </div>
+    );
+  })}</div>;
+}
+
+// ── COUNTER CARD ─────────────────────────────────────────────────────────────
+function CounterCard({c,days,onRelapse,onAction}) {
+  const reached=c.ms.filter(m=>m.day<=days);
+  const cur=reached[reached.length-1];
+  const nxt=c.ms.find(m=>m.day>days);
+  const pct=nxt?Math.min(100,(days/nxt.day)*100):100;
+  const isEx=c.key==="exercise";
+  return(
+    <div style={{background:`${c.color}0d`,border:`1px solid ${c.color}25`,borderRadius:16,padding:"15px 16px 13px"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+        <div>
+          <div style={{fontSize:10,color:c.color,textTransform:"uppercase",letterSpacing:1.8,marginBottom:4,opacity:.8}}>{c.icon} {c.label}</div>
+          <div style={{display:"flex",alignItems:"baseline",gap:4}}>
+            <span className="hd" style={{fontSize:46,fontWeight:700,color:c.color,lineHeight:1}}>{days}</span>
+            <span style={{fontSize:13,color:`${c.color}55`}}>{c.unit}</span>
+          </div>
+          {!isEx&&<div style={{fontSize:10,color:`${c.color}55`,marginTop:2}}>desde {fmtDate(getLS(c.sk,""))}</div>}
+        </div>
+        <div style={{flex:1,textAlign:"right",paddingLeft:10,paddingTop:2}}>
+          {cur&&<div style={{fontSize:11,color:`${c.color}bb`,lineHeight:1.4,marginBottom:5}}>✓ {cur.short}</div>}
+          {nxt&&<><div style={{fontSize:10,color:"rgba(255,255,255,0.18)",marginBottom:3}}>{isEx?`sesión ${nxt.day}`:`día ${nxt.day}`}: {nxt.short}</div><div className="pb-o"><div className="pb-i" style={{width:`${pct}%`,background:c.color}}/></div></>}
+        </div>
+      </div>
+      <div style={{display:"flex",gap:7,marginTop:11,flexWrap:"wrap"}}>
+        <button onClick={onAction} className="ghost-btn">{isEx?"➕ Sumar sesión":"✏️ Cambiar fecha"}</button>
+        {!isEx&&<button onClick={onRelapse} className="relapse-btn">⚠️ Recaída</button>}
+      </div>
+    </div>
+  );
+}
+
+// ── MAIN ─────────────────────────────────────────────────────────────────────
+function App() {
+  // Habit state
+  const [smokingStart,setSmokingStart]=useState(()=>getLS("smokingStart",""));
+  const [dietStart,setDietStart]=useState(()=>getLS("dietStart",""));
+  const [exSessions,setExSessions]=useState(()=>parseInt(getLS("exSessions","0")));
+  const [pillsDone,setPillsDone]=useState(()=>getLS("pills_"+todayKey(),"0")==="1");
+  const [smokingRelapses,setSmokingRelapses]=useState(()=>parseJSON("smokingRelapses",[]));
+  const [dietRelapses,setDietRelapses]=useState(()=>parseJSON("dietRelapses",[]));
+
+  // Weight & measures state
+  const [goalWeight,setGoalWeight]=useState(()=>parseFloat(getLS("goalWeight",""))||null);
+  const [weightEntries,setWeightEntries]=useState(()=>parseJSON("weightEntries",[]));
+  const [measures,setMeasures]=useState(()=>parseJSON("measures",[])); // [{date,waist,hip,chest}]
+
+  // UI
+  const [activeTab,setActiveTab]=useState("hoy");
+  const [activeSciC,setActiveSciC]=useState("smoking");
+  const [modal,setModal]=useState(null);
+  const [now,setNow]=useState(new Date());
+
+  // Modal inputs
+  const [dateInput,setDateInput]=useState("");
+  const [weightInput,setWeightInput]=useState("");
+  const [goalInput,setGoalInput]=useState("");
+  const [waistInput,setWaistInput]=useState("");
+  const [hipInput,setHipInput]=useState("");
+  const [chestInput,setChestInput]=useState("");
+  const [relapseCoach,setRelapseCoach]=useState(null);
+
+  const [theme,setTheme]=useState(()=>localStorage.getItem("theme")||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+
+  useEffect(()=>{const id=setInterval(()=>setNow(new Date()),60000);return()=>clearInterval(id);},[]);
+
+  useEffect(()=>{
+    document.body.className=theme;
+    localStorage.setItem("theme",theme);
+    const meta=document.getElementById("themeMetaColor");
+    if(meta)meta.content=theme==="light"?"#f0f7f0":"#0c1c0c";
+  },[theme]);
+
+  // Also listen to system changes
+  useEffect(()=>{
+    const mq=window.matchMedia("(prefers-color-scheme: dark)");
+    const handler=e=>{if(!localStorage.getItem("theme"))setTheme(e.matches?"dark":"light");};
+    mq.addEventListener("change",handler);
+    return()=>mq.removeEventListener("change",handler);
+  },[]);
+
+  function toggleTheme(){setTheme(t=>t==="dark"?"light":"dark");}
+  const isDark=theme==="dark";
+
+  const smokingDays=smokingStart?getDaysSince(smokingStart):0;
+  const dietDays=dietStart?getDaysSince(dietStart):0;
+  const doi=dayOfYear();
+  const quote=QUOTES[doi%QUOTES.length];
+  const tips={smoking:DAILY_TIPS.smoking[doi%7],diet:DAILY_TIPS.diet[doi%7],exercise:DAILY_TIPS.exercise[doi%7]};
+
+  // Weight helpers
+  const latestWeight=weightEntries.length?weightEntries[weightEntries.length-1].kg:null;
+  const firstWeight=weightEntries.length?weightEntries[0].kg:null;
+  const totalLost=firstWeight&&latestWeight?+(firstWeight-latestWeight).toFixed(1):0;
+  const toGoal=goalWeight&&latestWeight?+(latestWeight-goalWeight).toFixed(1):null;
+  const pctToGoal=goalWeight&&firstWeight&&firstWeight!==goalWeight?Math.min(100,Math.max(0,((firstWeight-latestWeight)/(firstWeight-goalWeight))*100)):0;
+
+  // Latest measures
+  const latestM=measures.length?measures[measures.length-1]:null;
+  const firstM=measures.length?measures[0]:null;
+  const whrRatio=latestM&&latestM.waist&&latestM.hip?+(latestM.waist/latestM.hip).toFixed(2):null;
+  const whrStatus=whrRatio?whrRatio<0.80?"✅ Saludable":whrRatio<0.85?"⚠️ Límite":"🔴 Alto riesgo":null;
+
+  function handleRelapse(key){
+    const msg=RELAPSE_MSG[key][Math.floor(Math.random()*3)];
+    setRelapseCoach({key,msg});
+  }
+  function confirmRelapse(key){
+    const t=todayKey();
+    if(key==="smoking"){const r=[...smokingRelapses,t];setSmokingRelapses(r);setLS("smokingRelapses",JSON.stringify(r));setSmokingStart(t);setLS("smokingStart",t);}
+    else{const r=[...dietRelapses,t];setDietRelapses(r);setLS("dietRelapses",JSON.stringify(r));setDietStart(t);setLS("dietStart",t);}
+    setRelapseCoach(null);
+  }
+  function openSetDate(key){
+    if(key==="exercise"){setModal("addSession");}
+    else{setDateInput(key==="smoking"?smokingStart:dietStart);setModal({type:"setDate",key});}
+  }
+  function saveDate(){
+    if(!dateInput)return;
+    if(modal.key==="smoking"){setSmokingStart(dateInput);setLS("smokingStart",dateInput);}
+    else{setDietStart(dateInput);setLS("dietStart",dateInput);}
+    setModal(null);
+  }
+  function addSession(){const n=exSessions+1;setExSessions(n);setLS("exSessions",String(n));setModal(null);}
+  function togglePills(){const n=!pillsDone;setPillsDone(n);setLS("pills_"+todayKey(),n?"1":"0");}
+
+  function saveWeight(){
+    const kg=parseFloat(weightInput);
+    if(isNaN(kg)||kg<20||kg>300)return;
+    const entry={date:todayKey(),kg};
+    const updated=[...weightEntries.filter(e=>e.date!==todayKey()),entry].sort((a,b)=>a.date.localeCompare(b.date));
+    setWeightEntries(updated);setLS("weightEntries",JSON.stringify(updated));
+    if(goalInput){const g=parseFloat(goalInput);if(!isNaN(g)){setGoalWeight(g);setLS("goalWeight",String(g));}}
+    setWeightInput("");setGoalInput("");setModal(null);
+  }
+  function saveMeasures(){
+    const w=parseFloat(waistInput),h=parseFloat(hipInput),ch=parseFloat(chestInput);
+    const entry={date:todayKey()};
+    if(!isNaN(w)&&w>0)entry.waist=w;
+    if(!isNaN(h)&&h>0)entry.hip=h;
+    if(!isNaN(ch)&&ch>0)entry.chest=ch;
+    if(!Object.keys(entry).includes("waist")&&!Object.keys(entry).includes("hip")&&!Object.keys(entry).includes("chest"))return;
+    const updated=[...measures.filter(e=>e.date!==todayKey()),entry].sort((a,b)=>a.date.localeCompare(b.date));
+    setMeasures(updated);setLS("measures",JSON.stringify(updated));
+    setWaistInput("");setHipInput("");setChestInput("");setModal(null);
+  }
+  function deleteLastWeight(){
+    if(!weightEntries.length)return;
+    const updated=weightEntries.slice(0,-1);
+    setWeightEntries(updated);setLS("weightEntries",JSON.stringify(updated));
+  }
+
+  const today=now.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});
+  const sciC=COUNTERS.find(c=>c.key===activeSciC);
+  const sciDays=activeSciC==="smoking"?smokingDays:activeSciC==="diet"?dietDays:exSessions;
+
+  return(
+    <div className="app-bg" style={{minHeight:"100vh",paddingBottom:50}}>
+
+      {/* HEADER */}
+      <div className="hdr-bg" style={{padding:"20px 15px 15px",textAlign:"center",position:"relative"}}>
+        <button onClick={toggleTheme} className="theme-toggle" title="Cambiar tema">
+          {isDark?"☀️ Claro":"🌙 Oscuro"}
+        </button>
+        <div className="hd title-color" style={{fontSize:23,marginBottom:2}}>Tu Reto de Salud</div>
+        <div className="sub-color" style={{fontSize:9,letterSpacing:3,textTransform:"uppercase",marginBottom:13}}>Cuerpo · Mente · Constancia</div>
+        <div style={{display:"flex",flexDirection:"column",gap:9}}>
+          <CounterCard c={COUNTERS[0]} days={smokingDays} onRelapse={()=>handleRelapse("smoking")} onAction={()=>openSetDate("smoking")}/>
+          <CounterCard c={COUNTERS[1]} days={dietDays}    onRelapse={()=>handleRelapse("diet")}    onAction={()=>openSetDate("diet")}/>
+          <CounterCard c={COUNTERS[2]} days={exSessions}  onRelapse={null}                          onAction={()=>openSetDate("exercise")}/>
+        </div>
+        <div className="quote-box" style={{marginTop:13,borderRadius:12,padding:"11px 14px",textAlign:"left"}}>
+          <div className="quote-label" style={{fontSize:9,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>💬 Frase del día</div>
+          <div className="hd quote-text" style={{fontSize:13,lineHeight:1.6,fontStyle:"italic"}}>"{quote}"</div>
+        </div>
+      </div>
+
+      {/* TABS */}
+      <div style={{display:"flex",gap:2,padding:"11px 11px 0",overflowX:"auto"}}>
+        {[{id:"hoy",l:"📋 Hoy"},{id:"peso",l:"⚖️ Peso"},{id:"ciencia",l:"🔬 Ciencia"},{id:"consejos",l:"💡 Consejos"}].map(t=>(
+          <button key={t.id} className={`tab ${activeTab===t.id?"on":""}`} onClick={()=>setActiveTab(t.id)}>{t.l}</button>
+        ))}
+      </div>
+
+      <div style={{padding:12}}>
+
+        {/* ── TAB HOY ── */}
+        {activeTab==="hoy"&&<div>
+          <div className="section-label" style={{fontSize:10,textTransform:"uppercase",letterSpacing:2,marginBottom:13,textAlign:"center"}}>{today}</div>
+          {/* Pills */}
+          <button onClick={togglePills} style={{width:"100%",border:"none",borderRadius:13,padding:"14px 16px",textAlign:"left",display:"flex",alignItems:"center",gap:11,cursor:"pointer",marginBottom:9,background:pillsDone?"rgba(154,122,208,0.14)":"rgba(255,255,255,0.04)",borderWidth:1,borderStyle:"solid",borderColor:pillsDone?"rgba(154,122,208,0.38)":"rgba(255,255,255,0.07)"}}>
+            <div style={{width:40,height:40,borderRadius:"50%",background:pillsDone?"#9a7ad0":"rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,color:pillsDone?"#fff":undefined,transition:"all .3s",flexShrink:0}}>{pillsDone?"✓":"💊"}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:14,fontWeight:600,color:pillsDone?"#deeede":"#7a9a7a"}}>Pastillas tomadas</div>
+              <div style={{fontSize:11,color:"#3a5a3a",marginTop:1}}>Hábito diario imprescindible</div>
+            </div>
+            <div style={{fontSize:11,color:pillsDone?"#9a7ad0":"#254525",fontWeight:600}}>{pillsDone?"¡Listo!":"Tap"}</div>
+          </button>
+          {/* Status per habit */}
+          {[{key:"smoking",label:"Sin fumar",icon:"🚭",color:"#f0c84a",days:smokingDays,start:smokingStart,relapses:smokingRelapses.length},{key:"diet",label:"Dieta limpia",icon:"🥗",color:"#e07060",days:dietDays,start:dietStart,relapses:dietRelapses.length},{key:"exercise",label:"Ejercicio",icon:"🏋️",color:"#60c4e0",days:exSessions,start:null,relapses:null}].map(c=>(
+            <div key={c.key} style={{background:`${c.color}09`,border:`1px solid ${c.color}20`,borderRadius:13,padding:"12px 14px",marginBottom:9}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <div style={{display:"flex",alignItems:"center",gap:9}}>
+                  <span style={{fontSize:20}}>{c.icon}</span>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:600,color:c.color}}>{c.label}</div>
+                    <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:1}}>{c.start?`Desde ${fmtDate(c.start)}`:`${c.days} sesiones acumuladas`}</div>
+                  </div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  <span className="hd" style={{fontSize:26,fontWeight:700,color:c.color,lineHeight:1}}>{c.days}</span>
+                  <div style={{fontSize:9,color:`${c.color}66`}}>{c.key==="exercise"?"sesiones":"días"}</div>
+                </div>
+              </div>
+              {c.relapses>0&&<div style={{fontSize:10,color:"rgba(255,255,255,0.2)",marginBottom:7}}>{c.relapses} recaída{c.relapses>1?"s":""} registrada{c.relapses>1?"s":""}. Cada intento cuenta.</div>}
+              <div style={{paddingTop:9,borderTop:"1px solid rgba(255,255,255,0.04)"}}>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.2)",marginBottom:4}}>Consejo de hoy</div>
+                <div style={{fontSize:12,color:`${c.color}aa`,fontWeight:600}}>{tips[c.key].icon} {tips[c.key].tip}</div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:2,lineHeight:1.4}}>{tips[c.key].why}</div>
+              </div>
+            </div>
+          ))}
+        </div>}
+
+        {/* ── TAB PESO ── */}
+        {activeTab==="peso"&&<div>
+          {/* Weight progress */}
+          <div className="card" style={{padding:16,marginBottom:11}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
+              <div>
+                <div style={{fontSize:10,color:"#5a8a5a",textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>⚖️ Peso actual</div>
+                {latestWeight?<>
+                  <div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                    <span className="hd" style={{fontSize:40,fontWeight:700,color:"#a0d0a0",lineHeight:1}}>{latestWeight}</span>
+                    <span style={{fontSize:14,color:"rgba(255,255,255,0.3)"}}>kg</span>
+                  </div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:2}}>Registrado {fmtDate(weightEntries[weightEntries.length-1].date)}</div>
+                </>:<div style={{fontSize:13,color:"rgba(255,255,255,0.25)",marginTop:4}}>Sin datos aún</div>}
+              </div>
+              <div style={{textAlign:"right"}}>
+                {goalWeight&&<>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginBottom:2}}>Meta</div>
+                  <div className="hd" style={{fontSize:26,fontWeight:700,color:"#5cba8a",lineHeight:1}}>{goalWeight} kg</div>
+                </>}
+                {toGoal!==null&&toGoal>0&&<div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:3}}>Faltan {toGoal} kg</div>}
+                {toGoal!==null&&toGoal<=0&&<div style={{fontSize:11,color:"#5cba8a",marginTop:3}}>🎉 ¡Meta alcanzada!</div>}
+              </div>
+            </div>
+            {/* Progress bar to goal */}
+            {goalWeight&&firstWeight&&firstWeight!==goalWeight&&<>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"rgba(255,255,255,0.25)",marginBottom:4}}>
+                <span>Inicio {firstWeight} kg</span><span>{Math.round(pctToGoal)}%</span><span>Meta {goalWeight} kg</span>
+              </div>
+              <div className="pb-o" style={{height:8}}>
+                <div className="pb-i" style={{width:`${pctToGoal}%`,background:"linear-gradient(90deg,#5cba8a,#a0e0b0)"}}/>
+              </div>
+            </>}
+            {/* Lost */}
+            {totalLost>0&&<div style={{marginTop:10,fontSize:12,color:"#5cba8a",fontWeight:600}}>📉 Has bajado {totalLost} kg desde el inicio</div>}
+            {totalLost<0&&<div style={{marginTop:10,fontSize:12,color:"#e07060"}}>📈 Has subido {Math.abs(totalLost)} kg desde el inicio</div>}
+          </div>
+
+          {/* Chart */}
+          {weightEntries.length>1&&<div className="card" style={{padding:"14px 14px 10px",marginBottom:11}}>
+            <div style={{fontSize:10,color:"#5a8a5a",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📊 Últimos 7 registros</div>
+            <WeightChart entries={weightEntries} goalWeight={goalWeight}/>
+          </div>}
+
+          {/* Action buttons */}
+          <div style={{display:"flex",gap:8,marginBottom:11}}>
+            <button onClick={()=>{setGoalInput(goalWeight?String(goalWeight):"");setModal("logWeight");}} style={{flex:2,background:"rgba(160,208,160,0.12)",border:"1px solid rgba(160,208,160,0.25)",color:"#a0d0a0",borderRadius:11,padding:"12px 0",cursor:"pointer",fontFamily:"'Source Sans 3',sans-serif",fontWeight:700,fontSize:13}}>➕ Registrar peso</button>
+            <button onClick={()=>setModal("logMeasures")} style={{flex:2,background:"rgba(96,196,224,0.1)",border:"1px solid rgba(96,196,224,0.22)",color:"#60c4e0",borderRadius:11,padding:"12px 0",cursor:"pointer",fontFamily:"'Source Sans 3',sans-serif",fontWeight:700,fontSize:13}}>📏 Medidas</button>
+          </div>
+
+          {/* Measurements */}
+          {latestM&&<div className="card" style={{padding:15,marginBottom:11}}>
+            <div style={{fontSize:10,color:"#5a8a5a",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📏 Medidas corporales</div>
+            <div style={{fontSize:10,color:"rgba(255,255,255,0.2)",marginBottom:10}}>Último registro: {fmtDate(latestM.date)}</div>
+            {[{key:"waist",label:"Cintura",icon:"🎯"},{key:"hip",label:"Cadera",icon:"🔵"},{key:"chest",label:"Pecho",icon:"❤️"}].map(({key,label,icon})=>{
+              const cur=latestM[key];
+              const prev=measures.length>1?measures[measures.length-2][key]:null;
+              const diff=cur&&prev?+(cur-prev).toFixed(1):null;
+              return cur?<div key={key} className="measure-row">
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <span style={{fontSize:16}}>{icon}</span>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:600,color:"#b0d0b0"}}>{label}</div>
+                    {firstM&&firstM[key]&&<div style={{fontSize:10,color:"rgba(255,255,255,0.2)"}}>Inicio: {firstM[key]} cm</div>}
+                  </div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  <div className="hd" style={{fontSize:22,color:"#60c4e0",fontWeight:700}}>{cur} <span style={{fontSize:12,color:"rgba(255,255,255,0.3)"}}>cm</span></div>
+                  {diff!==null&&<div style={{fontSize:10,color:diff<0?"#5cba8a":"#e07060"}}>{diff<0?"▼":"▲"} {Math.abs(diff)} cm</div>}
+                </div>
+              </div>:null;
+            })}
+            {/* WHR */}
+            {whrRatio&&<div style={{marginTop:10,paddingTop:10,borderTop:"1px solid rgba(255,255,255,0.06)"}}>
+              <div style={{fontSize:10,color:"#5a8a5a",textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Ratio cintura/cadera</div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div>
+                  <span className="hd" style={{fontSize:26,color:"#a0d0c0",fontWeight:700}}>{whrRatio}</span>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:2}}>Mujeres: &lt;0.80 ideal · &lt;0.85 aceptable</div>
+                </div>
+                <div style={{fontSize:14,color:"#b0d0b0"}}>{whrStatus}</div>
+              </div>
+            </div>}
+          </div>}
+
+          {/* Weight & habits connection */}
+          <div className="weight-box" style={{borderRadius:13,padding:14}}>
+            <div className="weight-conn-title" style={{fontSize:11,fontWeight:700,marginBottom:8}}>💡 Cómo tus retos afectan al peso</div>
+            {[{icon:"🚭",text:`Sin fumar ${smokingDays} días: tu metabolismo se está estabilizando. El aumento inicial es temporal (2-4 kg) y se normaliza en 3-6 meses.`},{icon:"🥗",text:`${dietDays} días de dieta limpia: sin picos de insulina, tu cuerpo empieza a usar grasa como combustible principal.`},{icon:"🏋️",text:`${exSessions} sesiones de ejercicio: estás construyendo músculo que quema calorías en reposo. La báscula puede no reflejarlo — las medidas sí.`}].map((t,i)=>(
+              <div key={i} style={{display:"flex",gap:9,marginBottom:i<2?8:0,paddingBottom:i<2?8:0,borderBottom:i<2?isDark?"1px solid rgba(255,255,255,0.04)":"1px solid rgba(0,80,0,0.08)":"none"}}>
+                <span style={{fontSize:16,flexShrink:0}}>{t.icon}</span>
+                <div className="weight-conn-body" style={{fontSize:12,lineHeight:1.5}}>{t.text}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Delete last */}
+          {weightEntries.length>0&&<div style={{textAlign:"center",marginTop:10}}>
+            <button onClick={deleteLastWeight} className="del-btn" style={{background:"transparent",border:"none",fontSize:11,cursor:"pointer",fontFamily:"'Source Sans 3',sans-serif"}}>🗑️ Borrar último registro de peso</button>
+          </div>}
+        </div>}
+
+        {/* ── TAB CIENCIA ── */}
+        {activeTab==="ciencia"&&<div>
+          <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:12}}>
+            {COUNTERS.map(c=>(
+              <button key={c.key} onClick={()=>setActiveSciC(c.key)} style={{border:"none",borderRadius:10,padding:"7px 12px",cursor:"pointer",fontFamily:"'Source Sans 3',sans-serif",fontSize:12,fontWeight:600,background:activeSciC===c.key?`${c.color}18`:"rgba(255,255,255,0.04)",borderWidth:1,borderStyle:"solid",borderColor:activeSciC===c.key?`${c.color}40`:"rgba(255,255,255,0.07)",color:activeSciC===c.key?c.color:"#5a8a5a"}}>
+                {c.icon} {c.label}
+              </button>
+            ))}
+          </div>
+          <div className="sci-label" style={{fontSize:11,textAlign:"center",marginBottom:11}}>Toca cada hito para leer qué pasa en tu cuerpo</div>
+          <MilestoneList ms={sciC.ms} days={sciDays} isEx={activeSciC==="exercise"}/>
+          <div className="src-label" style={{fontSize:10,textAlign:"center",marginTop:10}}>Fuentes: OMS · American Heart Association · NHS · Diabetes UK</div>
+        </div>}
+
+        {/* ── TAB CONSEJOS ── */}
+        {activeTab==="consejos"&&<div>
+          <div className="tip-box" style={{borderRadius:13,padding:"13px 14px",marginBottom:13}}>
+            <div className="tip-label" style={{fontSize:9,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📅 Consejos de hoy · {today}</div>
+            {Object.entries(tips).map(([key,t])=>{
+              const c=COUNTERS.find(x=>x.key===key);
+              return <div key={key} style={{marginBottom:10,paddingBottom:10,borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+                <div style={{fontSize:10,color:c.color,textTransform:"uppercase",letterSpacing:1,marginBottom:3}}>{c.icon} {c.label}</div>
+                <div style={{fontSize:13,fontWeight:600,color:"#c0d8c0"}}>{t.icon} {t.tip}</div>
+                <div style={{fontSize:11,color:"#4a6a4a",lineHeight:1.5,marginTop:2}}>{t.why}</div>
+              </div>;
+            })}
+          </div>
+          <div className="card" style={{padding:14,marginBottom:10}}>
+            <div className="hd" style={{fontSize:14,color:"#f0d050",marginBottom:6}}>El antojo dura solo 3 minutos</div>
+            <div style={{fontSize:13,color:"#6a8a6a",lineHeight:1.6}}>Cualquier impulso alcanza su pico y baja solo en <strong style={{color:"#c8c860"}}>2-3 minutos</strong> si no actúas. Cada vez que lo superas, esa conexión neural se debilita de forma permanente.</div>
+          </div>
+          <div className="ex-tip-box" style={{borderRadius:13,padding:14}}>
+            <div className="ex-tip-title" style={{fontSize:13,fontWeight:700,marginBottom:6}}>🏋️ El ejercicio es el antídoto universal</div>
+            <div className="ex-tip-body" style={{fontSize:12,lineHeight:1.6}}>Libera <strong className="ex-tip-strong">dopamina, serotonina y endorfinas</strong> — el mismo cóctel del cigarro y el azúcar, sin daño. 20 minutos al día sustituyen los tres vicios a la vez y acelera la pérdida de grasa.</div>
+          </div>
+        </div>}
+      </div>
+
+      {/* ── MODAL: SET DATE ── */}
+      {modal?.type==="setDate"&&<div className="ov" onClick={()=>setModal(null)}>
+        <div className="mb" onClick={e=>e.stopPropagation()}>
+          <div className="hd" style={{fontSize:17,color:"#b0d8c0",marginBottom:5}}>{modal.key==="smoking"?"🚭 ¿Cuándo dejaste de fumar?":"🥗 ¿Cuándo empezaste la dieta?"}</div>
+          <div style={{fontSize:12,color:"#4a7a4a",marginBottom:13,lineHeight:1.5}}>El contador se calculará automáticamente desde esta fecha.</div>
+          <input className="din" type="date" value={dateInput} onChange={e=>setDateInput(e.target.value)} style={{marginBottom:14}}/>
+          <div style={{display:"flex",gap:8}}>
+            <button onClick={()=>setModal(null)} className="ghost-btn" style={{flex:1,padding:11}}>Cancelar</button>
+            <button onClick={saveDate} className="green-btn" style={{flex:2}}>Guardar</button>
+          </div>
+        </div>
+      </div>}
+
+      {/* ── MODAL: ADD SESSION ── */}
+      {modal==="addSession"&&<div className="ov" onClick={()=>setModal(null)}>
+        <div className="mb" onClick={e=>e.stopPropagation()}>
+          <div style={{textAlign:"center",fontSize:36,marginBottom:9}}>🏋️</div>
+          <div className="hd" style={{fontSize:17,color:"#b0d8c0",textAlign:"center",marginBottom:7}}>¡Registrar sesión!</div>
+          <div style={{fontSize:13,color:"#4a7a4a",textAlign:"center",marginBottom:5}}>Llevas <strong style={{color:"#60c4e0"}}>{exSessions} sesiones</strong> acumuladas.</div>
+          <div style={{fontSize:12,color:"#3a5a3a",textAlign:"center",marginBottom:17,lineHeight:1.5}}>Gym, caminar 30 min, bici, nadar, bailar... cualquier movimiento cuenta.</div>
+          <div style={{display:"flex",gap:8}}>
+            <button onClick={()=>setModal(null)} className="ghost-btn" style={{flex:1,padding:11}}>Cancelar</button>
+            <button onClick={addSession} style={{flex:2,background:"#60c4e0",border:"none",color:"#0a1820",borderRadius:10,padding:11,cursor:"pointer",fontFamily:"'Source Sans 3',sans-serif",fontWeight:700,fontSize:14}}>➕ Sumar sesión</button>
+          </div>
+        </div>
+      </div>}
+
+      {/* ── MODAL: LOG WEIGHT ── */}
+      {modal==="logWeight"&&<div className="ov" onClick={()=>setModal(null)}>
+        <div className="mb" onClick={e=>e.stopPropagation()}>
+          <div className="hd" style={{fontSize:17,color:"#b0d8c0",marginBottom:4}}>⚖️ Registrar peso</div>
+          <div style={{fontSize:11,color:"#4a7a4a",marginBottom:14}}>{today}</div>
+          <div className="input-row">
+            <div className="input-label">Peso actual (kg)</div>
+            <input className="din" type="number" step="0.1" min="20" max="300" placeholder={latestWeight?`Último: ${latestWeight} kg`:"ej. 78.5"} value={weightInput} onChange={e=>setWeightInput(e.target.value)}/>
+          </div>
+          <div className="input-row">
+            <div className="input-label">Meta de peso (kg) {goalWeight?`· actual: ${goalWeight} kg`:""}</div>
+            <input className="din" type="number" step="0.1" min="20" max="300" placeholder={goalWeight?String(goalWeight):"ej. 65"} value={goalInput} onChange={e=>setGoalInput(e.target.value)}/>
+          </div>
+          <div style={{display:"flex",gap:8,marginTop:6}}>
+            <button onClick={()=>setModal(null)} className="ghost-btn" style={{flex:1,padding:11}}>Cancelar</button>
+            <button onClick={saveWeight} className="green-btn" style={{flex:2}}>Guardar</button>
+          </div>
+        </div>
+      </div>}
+
+      {/* ── MODAL: LOG MEASURES ── */}
+      {modal==="logMeasures"&&<div className="ov" onClick={()=>setModal(null)}>
+        <div className="mb" onClick={e=>e.stopPropagation()}>
+          <div className="hd" style={{fontSize:17,color:"#b0d8c0",marginBottom:4}}>📏 Medidas corporales</div>
+          <div style={{fontSize:11,color:"#4a7a4a",marginBottom:14}}>{today} · Rellena solo las que tengas</div>
+          {[{key:"waist",label:"Cintura (cm)",ph:latestM?.waist?`Último: ${latestM.waist}`:"ej. 85",val:waistInput,set:setWaistInput},{key:"hip",label:"Cadera (cm)",ph:latestM?.hip?`Último: ${latestM.hip}`:"ej. 100",val:hipInput,set:setHipInput},{key:"chest",label:"Pecho (cm)",ph:latestM?.chest?`Último: ${latestM.chest}`:"ej. 95",val:chestInput,set:setChestInput}].map(f=>(
+            <div key={f.key} className="input-row">
+              <div className="input-label">{f.label}</div>
+              <input className="din" type="number" step="0.1" min="40" max="200" placeholder={f.ph} value={f.val} onChange={e=>f.set(e.target.value)}/>
+            </div>
+          ))}
+          <div style={{fontSize:11,color:"#3a5a3a",marginBottom:14,lineHeight:1.5}}>💡 El ratio cintura/cadera es un indicador clínico fiable independientemente de la masa muscular.</div>
+          <div style={{display:"flex",gap:8}}>
+            <button onClick={()=>setModal(null)} className="ghost-btn" style={{flex:1,padding:11}}>Cancelar</button>
+            <button onClick={saveMeasures} style={{flex:2,background:"#60c4e0",border:"none",color:"#0a1820",borderRadius:10,padding:11,cursor:"pointer",fontFamily:"'Source Sans 3',sans-serif",fontWeight:700,fontSize:14}}>Guardar</button>
+          </div>
+        </div>
+      </div>}
+
+      {/* ── MODAL: RELAPSE ── */}
+      {relapseCoach&&<div className="ov" onClick={()=>setRelapseCoach(null)}>
+        <div className="mb" onClick={e=>e.stopPropagation()}>
+          <div style={{textAlign:"center",fontSize:34,marginBottom:9}}>🌱</div>
+          <div className="hd" style={{fontSize:16,color:"#b0d8c0",textAlign:"center",marginBottom:11}}>Está bien. Sigues aquí.</div>
+          <div style={{fontSize:13,color:"#7a9a7a",lineHeight:1.7,marginBottom:18,fontStyle:"italic"}}>"{relapseCoach.msg}"</div>
+          <div style={{fontSize:11,color:"#3a5a3a",marginBottom:16,lineHeight:1.5}}>Si confirmas la recaída, el contador se reinicia desde hoy. Tu historial queda guardado — cada intento te acerca más a lograrlo.</div>
+          <div style={{display:"flex",gap:8,flexDirection:"column"}}>
+            <button onClick={()=>confirmRelapse(relapseCoach.key)} style={{background:"rgba(220,80,60,0.12)",border:"1px solid rgba(220,80,60,0.28)",color:"#e08070",borderRadius:10,padding:11,cursor:"pointer",fontFamily:"'Source Sans 3',sans-serif",fontWeight:600}}>Sí, reiniciar contador desde hoy</button>
+            <button onClick={()=>setRelapseCoach(null)} className="green-btn">Fue un momento débil. ¡Sigo!</button>
+          </div>
+        </div>
+      </div>}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
